@@ -1,0 +1,72 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+model User {
+  id            String          @id @default(uuid())
+  email         String          @unique
+  password      String
+  name          String
+  role          String
+  designation   String?
+  institutionId String?
+  institution   Institution?    @relation(fields: [institutionId], references: [id])
+  applications  Application[]   @relation("ApplicantApplications")
+  reviews       ReviewDecision[]
+  assignedApps  Application[]   @relation("OfficerApplications")
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Institution {
+  id               String        @id @default(uuid())
+  name             String
+  code             String        @unique
+  type             String
+  state            String
+  address          String
+  contactEmail     String
+  contactPhone     String
+  establishedYear  Int
+  accreditedStatus String
+  users            User[]
+  applications     Application[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model Application {
+  id                String             @id @default(uuid())
+  applicationNumber String             @unique
+  institutionId     String
+  institution       Institution        @relation(fields: [institutionId], references: [id])
+  applicantId       String
+  applicant         User               @relation("ApplicantApplications", fields: [applicantId], references: [id])
+  academicYear      String
+  programCategory   String
+  status            String             @default("DRAFT")
+  overallTrustScore Int                @default(0)
+  aiSummary         String?
+  assignedOfficerId String?
+  assignedOfficer   User?              @relation("OfficerApplications", fields: [assignedOfficerId], references: [id])
+  documents         Document[]
+  validationResults ValidationResult[]
+  anomalyFlags      AnomalyFlag[]
+  reviewDecisions   ReviewDecision[]
+  auditLogs         AuditLog[]
+  submittedAt       DateTime?
+  decidedAt         DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model Document {
+  id                String             @id

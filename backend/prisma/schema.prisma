@@ -1,0 +1,184 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String          @id @default(uuid())
+  email         String          @unique
+  password      String
+  name          String
+  role          String          // "APPLICANT" | "OFFICER" | "ADMIN"
+  designation   String?
+  institutionId String?
+  institution   Institution?    @relation(fields: [institutionId], references: [id])
+  applications  Application[]   @relation("ApplicantApplications")
+  reviews       ReviewDecision[]
+  assignedApps  Application[]   @relation("OfficerApplications")
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Institution {
+  id               String        @id @default(uuid())
+  name             String
+  code             String        @unique
+  type             String        // "UNIVERSITY" | "COLLEGE" | "POLYTECHNIC"
+  state            String
+  address          String
+  contactEmail     String
+  contactPhone     String
+  establishedYear  Int
+  accreditedStatus String
+  users            User[]
+  applications     Application[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model Application {
+  id                String             @id @default(uuid())
+  applicationNumber String             @unique
+  institutionId     String
+  institution       Institution        @relation(fields: [institutionId], references: [id])
+  applicantId       String
+  applicant         User               @relation("ApplicantApplications", fields: [applicantId], references: [id])
+  academicYear      String
+  programCategory   String             // "ENGINEERING" | "MANAGEMENT" | "PHARMACY" | "ARCHITECTURE"
+  status            String             @default("DRAFT") // DRAFT, SUBMITTED, PROCESSING, NEEDS_ATTENTION, UNDER_REVIEW, APPROVED, REJECTED, CLARIFICATION_REQUESTED
+  overallTrustScore Int                @default(0)
+  aiSummary         String?
+  assignedOfficerId String?
+  assignedOfficer   User?              @relation("OfficerApplications", fields: [assignedOfficerId], references: [id])
+  documents         Document[]
+  validationResults ValidationResult[]
+  anomalyFlags      AnomalyFlag[]
+  reviewDecisions   ReviewDecision[]
+  auditLogs         AuditLog[]
+  submittedAt       DateTime?
+  decidedAt         DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model Document {
+  id                String             @id @default(uuid())
+  applicationId     String
+  application       Application        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  documentType      String             // "FIRE_NOC", "LAND_DOCUMENT", "AICTE_APPROVAL", "BUILDING_PLAN", "SOCIETY_REGISTRATION", "FACULTY_LIST", "FINANCIAL_AUDIT"
+  fileName          String
+  originalName      String
+  filePath          String
+  mimeType          String
+  fileSize          Int
+  sha256Hash        String
+  trustScore        Int                @default(100)
+  status            String             @default("PENDING") // PENDING, VALIDATED, FLAGGED, REJECTED
+  isTampered        Boolean            @default(false)
+  ocrCompleted      Boolean            @default(false)
+  extractedFields   ExtractedField[]
+  validationResults ValidationResult[]
+  anomalyFlags      AnomalyFlag[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model ExtractedField {
+  id             String    @id @default(uuid())
+  documentId     String
+  document       Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  fieldName      String    // "institutionName", "issueDate", "expiryDate", "certificateNumber", "issuingAuthority", "landArea", "approvalStatus"
+  fieldValue     String
+  confidence     Float     @default(0.95)
+  boundingBoxJson String?  // JSON string e.g. {"x": 100, "y": 200, "w": 300, "h": 50, "page": 1}
+  pageNumber     Int       @default(1)
+  createdAt      DateTime  @default(now())
+}
+
+model ValidationResult {
+  id            String       @id @default(uuid())
+  applicationId String
+  application   Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  documentId    String?
+  document      Document?    @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  checkType     String       // "FORMAT" | "EXPIRY" | "MISMATCH" | "MISSING" | "COMPLIANCE"
+  severity      String       // "INFO" | "WARNING" | "CRITICAL"
+  status        String       // "PASS" | "FAIL"
+  message       String
+  fieldName     String?
+  expectedValue String?
+  actualValue   String?
+  createdAt     DateTime     @default(now())
+}
+
+model ComplianceRule {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g. "RULE_FIRE_NOC_MANDATORY"
+  title       String
+  description String
+  category    String   // "MANDATORY" | "INFRASTRUCTURE" | "ACADEMIC" | "LEGAL"
+  ruleJson    String   // JSON condition logic
+  isActive    Boolean  @default(true)
+  severity    String   @default("CRITICAL") // "WARNING" | "CRITICAL"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AnomalyFlag {
+  id              String       @id @default(uuid())
+  applicationId   String
+  application     Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  documentId      String?
+  document        Document?    @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  flagType        String       // "DUPLICATE_HASH", "CROSS_APP_REUSE", "IMAGE_TAMPERING", "DATE_ANOMALY", "FONT_INCONSISTENCY", "UNTRUSTED_ISSUER"
+  severity        String       // "LOW", "MEDIUM", "HIGH", "CRITICAL"
+  confidenceScore Float        // 0.0 to 1.0
+  title           String
+  evidenceSummary String
+  boundingBoxJson String?      // Coordinate bounding box for visual evidence viewer
+  suggestedAction String
+  createdAt       DateTime     @default(now())
+}
+
+model ReviewDecision {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  officerId     String
+  officer       User        @relation(fields: [officerId], references: [id])
+  decision      String      // "APPROVED" | "REJECTED" | "CLARIFICATION_REQUESTED"
+  remarks       String
+  conditions    String?
+  createdAt     DateTime    @default(now())
+}
+
+model AuditLog {
+  id            String       @id @default(uuid())
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  userId        String?
+  user          User?        @relation(fields: [userId], references: [id])
+  action        String       // "USER_LOGIN", "APPLICATION_CREATED", "DOCUMENT_UPLOADED", "AI_ANALYSIS_COMPLETED", "DECISION_SUBMITTED", "RULE_UPDATED"
+  details       String       // JSON text or detailed narrative
+  ipAddress     String?      @default("127.0.0.1")
+  userAgent     String?
+  createdAt     DateTime     @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO") // "INFO" | "SUCCESS" | "WARNING" | "DANGER"
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}

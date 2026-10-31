@@ -1,0 +1,240 @@
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+
+export interface GeneratedDocMeta {
+  fileName: string;
+  originalName: string;
+  filePath: string;
+  fileSize: number;
+  sha256Hash: string;
+  mimeType: string;
+  extractedFields: Record<string, string>;
+  boundingBoxes: Array<{
+    field: string;
+    box: { x: number; y: number; w: number; h: number; page: number };
+    confidence: number;
+  }>;
+  isTampered: boolean;
+  tamperingDetails?: {
+    type: string;
+    evidence: string;
+    box: { x: number; y: number; w: number; h: number; page: number };
+  };
+}
+
+export function generateSyntheticSvgCertificate(params: {
+  certId: string;
+  certType: string;
+  title: string;
+  institutionName: string;
+  issueDate: string;
+  expiryDate: string;
+  issuingAuthority: string;
+  isTampered?: boolean;
+  tamperedField?: string;
+  qrPayload?: string;
+}): { svg: string; meta: GeneratedDocMeta } {
+  const {
+    certId,
+    certType,
+    title,
+    institutionName,
+    issueDate,
+    expiryDate,
+    issuingAuthority,
+    isTampered = false,
+    tamperedField = 'expiryDate',
+    qrPayload = `https://aicte-india.org/verify?cert=${certId}`
+  } = params;
+
+  const fileName = `${certId.toLowerCase()}_${certType.toLowerCase()}${isTampered ? '_tampered' : ''}.svg`;
+  const storageDir = path.resolve(__dirname, '../../../storage/uploads');
+  if (!fs.existsSync(storageDir)) {
+    fs.mkdirSync(storageDir, { recursive: true });
+  }
+  const filePath = path.join(storageDir, fileName);
+
+  const displayInstName = institutionName;
+  const displayExpiry = isTampered ? '2030-12-31' : expiryDate;
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="100%" height="100%" style="background:#fdfdfd; font-family:'Plus Jakarta Sans', Arial, sans-serif;">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B" />
+      <stop offset="100%" stop-color="#1C2541" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Ornate Border -->
+  <rect x="25" y="25" width="750" height="1050" fill="none" stroke="#1C2541" stroke-width="4" rx="12" />
+  <rect x="35" y="35" width="730" height="1030" fill="none" stroke="#3A86FF" stroke-width="1.5" stroke-dasharray="8,4" rx="8" />
+
+  <!-- Watermark Seal -->
+  <g opacity="0.04" transform="translate(400, 550) scale(1.4)">
+    <circle r="160" fill="none" stroke="#000" stroke-width="20" />
+    <polygon points="0,-140 120,70 -120,70" fill="none" stroke="#000" stroke-width="16"/>
+    <text text-anchor="middle" y="20" font-size="34" font-weight="bold">GOVERNMENT OF INDIA</text>
+  </g>
+
+  <!-- Header Banner -->
+  <rect x="50" y="55" width="700" height="110" rx="8" fill="url(#headerGrad)" />
+  <text x="400" y="95" fill="#00F0FF" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="3">REGULATORY COMPLIANCE BUREAU</text>
+  <text x="400" y="125" fill="#FFFFFF" font-size="22" font-weight="800" text-anchor="middle">${issuingAuthority.toUpperCase()}</text>
+  <text x="400" y="148" fill="#94A3B8" font-size="12" text-anchor="middle">OFFICIAL VERIFICATION DIVISION • STATUTORY CLEARANCE CERTIFICATE</text>
+
+  <!-- Certificate ID & Date Header -->
+  <g transform="translate(60, 200)">
+    <text x="0" y="0" fill="#64748B" font-size="12" font-weight="600">CERTIFICATE NO.</text>
+    <text x="0" y="24" fill="#0B132B" font-size="16" font-family="'JetBrains Mono', monospace" font-weight="700">${certId}</text>
+
+    <text x="500" y="0" fill="#64748B" font-size="12" font-weight="600">SECURITY HASH REF</text>
+    <text x="500" y="24" fill="#3A86FF" font-size="13" font-family="'JetBrains Mono', monospace">#SEC-${certId.slice(-6)}</text>
+  </g>
+
+  <line x1="60" y1="245" x2="740" y2="245" stroke="#E2E8F0" stroke-width="1.5" />
+
+  <!-- Document Main Title -->
+  <text x="400" y="300" fill="#1E293B" font-size="24" font-weight="800" text-anchor="middle" letter-spacing="1">${title}</text>
+  <text x="400" y="325" fill="#64748B" font-size="13" text-anchor="middle">Issued pursuant to Section 10(k) of the National Technical &amp; Higher Education Regulations</text>
+
+  <!-- Body Content -->
+  <g transform="translate(80, 380)">
+    <text x="0" y="0" fill="#475569" font-size="14">This is to officially certify that the regulatory compliance inspection has been completed for:</text>
+    
+    <!-- Institution Box -->
+    <rect x="0" y="20" width="640" height="60" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1" />
+    <text x="20" y="56" fill="#0F172A" font-size="18" font-weight="800">${displayInstName}</text>
+
+    <text x="0" y="125" fill="#475569" font-size="14">The institution has undergone mandatory statutory scrutiny for compliance with respect to standard</text>
+    <text x="0" y="148" fill="#475569" font-size="14">infrastructure, safety covenants, land ownership, and legal charter documentation.</text>
+
+    <!-- Key Specification Grid -->
+    <g transform="translate(0, 190)">
+      <rect x="0" y="0" width="300" height="90" rx="8" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+      <text x="20" y="30" fill="#64748B" font-size="12" font-weight="600">ISSUE DATE</text>
+      <text x="20" y="65" fill="#0F172A" font-size="18" font-weight="700">${issueDate}</text>
+
+      <rect x="340" y="0" width="300" height="90" rx="8" fill="${isTampered ? '#FEF2F2' : '#FFFFFF'}" stroke="${isTampered ? '#EF4444' : '#E2E8F0'}" stroke-width="${isTampered ? '2' : '1'}" />
+      <text x="360" y="30" fill="${isTampered ? '#B91C1C' : '#64748B'}" font-size="12" font-weight="600">EXPIRY / VALIDITY UNTIL</text>
+      <text x="360" y="65" fill="${isTampered ? '#DC2626' : '#0F172A'}" font-size="18" font-weight="700">${displayExpiry}</text>
+      ${isTampered ? `
+      <!-- Visible Alteration Artifact Glow -->
+      <rect x="350" y="42" width="220" height="32" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="355" y="85" fill="#EF4444" font-size="10" font-weight="bold">⚠️ FORENSIC ARTIFACT: FONT MISMATCH &amp; ELA VARIANCE DETECTED</text>
+      ` : ''}
+    </g>
+
+    <!-- Clearances Summary -->
+    <g transform="translate(0, 320)">
+      <text x="0" y="0" fill="#334155" font-size="13" font-weight="700">STATUTORY PARAMETERS VERIFIED:</text>
+      <circle cx="10" cy="25" r="4" fill="#10B981"/>
+      <text x="25" y="29" fill="#475569" font-size="13">Municipal Zonal Land Clearance Code: Approved Z-4 Category</text>
+      <circle cx="10" cy="50" r="4" fill="#10B981"/>
+      <text x="25" y="54" fill="#475569" font-size="13">Structural Integrity &amp; Fire Evacuation Route: Inspected &amp; Certified</text>
+      <circle cx="10" cy="75" r="4" fill="#10B981"/>
+      <text x="25" y="79" fill="#475569" font-size="13">Public Safety and Environmental Standards: Grade A Compliant</text>
+    </g>
+  </g>
+
+  <!-- Footer Seal & QR Section -->
+  <g transform="translate(80, 880)">
+    <!-- QR Code Block -->
+    <rect x="0" y="0" width="110" height="110" rx="8" fill="#FFFFFF" stroke="#0B132B" stroke-width="2"/>
+    <!-- Synthetic QR Pattern -->
+    <rect x="10" y="10" width="30" height="30" fill="#0B132B" />
+    <rect x="16" y="16" width="18" height="18" fill="#FFFFFF" />
+    <rect x="20" y="20" width="10" height="10" fill="#0B132B" />
+
+    <rect x="70" y="10" width="30" height="30" fill="#0B132B" />
+    <rect x="76" y="16" width="18" height="18" fill="#FFFFFF" />
+    <rect x="80" y="20" width="10" height="10" fill="#0B132B" />
+
+    <rect x="10" y="70" width="30" height="30" fill="#0B132B" />
+    <rect x="16" y="76" width="18" height="18" fill="#FFFFFF" />
+    <rect x="20" y="80" width="10" height="10" fill="#0B132B" />
+
+    <rect x="50" y="30" width="15" height="15" fill="#0B132B"/>
+    <rect x="70" y="55" width="25" height="10" fill="#0B132B"/>
+    <rect x="45" y="75" width="18" height="25" fill="#0B132B"/>
+
+    <text x="125" y="30" fill="#0B132B" font-size="12" font-weight="700">QR REGISTRY AUTHENTICATOR</text>
+    <text x="125" y="50" fill="#64748B" font-size="11">Scan with AICTE Mobile App to verify authenticity.</text>
+    <text x="125" y="70" fill="#3A86FF" font-size="10" font-family="'JetBrains Mono', monospace">SHA-256: ${crypto.createHash('sha256').update(certId + institutionName).digest('hex').slice(0, 24)}...</text>
+
+    <!-- Authorized Signatory Stamp -->
+    <g transform="translate(420, 0)">
+      <circle cx="80" cy="50" r="45" fill="none" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,3" opacity="0.8"/>
+      <text x="80" y="45" fill="#2563EB" font-size="11" font-weight="bold" text-anchor="middle">DIGITALLY VERIFIED</text>
+      <text x="80" y="60" fill="#2563EB" font-size="9" text-anchor="middle">OFFICE OF REGULATOR</text>
+      <path d="M 40 85 Q 90 60 140 85" fill="none" stroke="#1E40AF" stroke-width="2.5" />
+      <text x="80" y="105" fill="#475569" font-size="11" font-weight="700" text-anchor="middle">Authorized Signatory</text>
+    </g>
+  </g>
+
+  <!-- Bottom micro-footer -->
+  <text x="400" y="1045" fill="#94A3B8" font-size="10" text-anchor="middle">SIH26261 | Digitizing Verification. Ensuring Compliance. Building a Transparent Future. • Form 26-B Regulatory Mandate</text>
+</svg>`;
+
+  fs.writeFileSync(filePath, svg, 'utf-8');
+  const fileBytes = Buffer.from(svg, 'utf-8');
+  const sha256Hash = crypto.createHash('sha256').update(fileBytes).digest('hex');
+
+  // Evidence Viewer Bounding Boxes (normalized or pixel coordinates matching SVG)
+  const boundingBoxes = [
+    {
+      field: 'institutionName',
+      box: { x: 80, y: 400, w: 640, h: 60, page: 1 },
+      confidence: 0.98
+    },
+    {
+      field: 'certificateNumber',
+      box: { x: 60, y: 200, w: 250, h: 40, page: 1 },
+      confidence: 0.99
+    },
+    {
+      field: 'issueDate',
+      box: { x: 80, y: 570, w: 300, h: 90, page: 1 },
+      confidence: 0.97
+    },
+    {
+      field: 'expiryDate',
+      box: { x: 420, y: 570, w: 300, h: 90, page: 1 },
+      confidence: isTampered ? 0.45 : 0.96
+    },
+    {
+      field: 'issuingAuthority',
+      box: { x: 50, y: 55, w: 700, h: 110, page: 1 },
+      confidence: 0.99
+    }
+  ];
+
+  const meta: GeneratedDocMeta = {
+    fileName,
+    originalName: `${title.replace(/\s+/g, '_')}_Official.svg`,
+    filePath: `storage/uploads/${fileName}`,
+    fileSize: fileBytes.length,
+    sha256Hash,
+    mimeType: 'image/svg+xml',
+    extractedFields: {
+      institutionName: displayInstName,
+      certificateNumber: certId,
+      issueDate,
+      expiryDate: displayExpiry,
+      issuingAuthority,
+      documentTitle: title
+    },
+    boundingBoxes,
+    isTampered,
+    tamperingDetails: isTampered ? {
+      type: 'IMAGE_TAMPERING',
+      evidence: 'Pixel variance of 48.7% detected in bounding zone [x: 420, y: 570, w: 300, h: 90] around Expiry Date. Inconsistent font baseline and compression residue.',
+      box: { x: 420, y: 570, w: 300, h: 90, page: 1 }
+    } : undefined
+  };
+
+  return { svg, meta };
+}
