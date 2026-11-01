@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import PDFDocument from 'pdfkit';
 import { Response } from 'express';
 
-const prisma = new PrismaClient();
+
 
 export async function generateApplicationPdf(applicationId: string, res: Response) {
   const app = await prisma.application.findUnique({
@@ -47,7 +47,7 @@ export async function generateApplicationPdf(applicationId: string, res: Respons
   doc
     .fillColor('#00F0FF')
     .fontSize(10)
-    .text('SIH26261 REGULATORY VERIFICATION SYSTEM', 55, 52, { characterSpacing: 1.5 });
+    .text('DOCUSURE AI REGULATORY VERIFICATION SYSTEM', 55, 52, { characterSpacing: 1.5 });
 
   doc
     .fillColor('#FFFFFF')
@@ -232,7 +232,7 @@ export async function generateApplicationPdf(applicationId: string, res: Respons
     .fillColor('#94A3B8')
     .fontSize(8)
     .text(
-      'SIH26261 | Digitizing Verification. Ensuring Compliance. Building a Transparent Future.',
+      'Docusure AI | Digitizing Verification. Ensuring Compliance. Building a Transparent Future.',
       40,
       780,
       { align: 'center', width: 515 }

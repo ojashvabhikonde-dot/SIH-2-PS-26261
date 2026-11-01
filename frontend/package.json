@@ -1,5 +1,5 @@
 {
-  "name": "sih26261-frontend",
+  "name": "docusure-ai-frontend",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.60.5",
+    "@vercel/blob": "^2.8.2",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",

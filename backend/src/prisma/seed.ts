@@ -5,7 +5,7 @@ import { generateSyntheticSvgCertificate } from '../utils/generateDocuments';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seeding for SIH26261 Platform...');
+  console.log('🌱 Starting database seeding for Docusure AI Platform...');
 
   // 1. Clean existing records in topological order
   await prisma.notification.deleteMany();

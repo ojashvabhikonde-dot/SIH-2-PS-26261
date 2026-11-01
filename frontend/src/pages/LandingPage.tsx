@@ -60,10 +60,6 @@ export const LandingPage: React.FC = () => {
 
       {/* ── Hero ───────────────────────────────────────────── */}
       <section className="relative pt-20 pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto aurora-bg">
-        {/* Ambient orbs */}
-        <div className="absolute top-12 left-1/3 w-96 h-96 bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-[140px] pointer-events-none" />
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
           {/* Left Column */}
           <motion.div
@@ -73,14 +69,14 @@ export const LandingPage: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full t-pill text-xs font-semibold shadow-sm backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse" style={{ color: 'var(--accent)' }} />
-              <span>SIH26261 Autonomous Regulatory Compliance Suite</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full t-pill text-xs font-semibold shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+              <span>Docusure AI — Autonomous Regulatory Compliance Suite</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]" style={{ color: 'var(--text-heading)' }}>
               From Documents to Decisions,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400">
+              <span className="text-transparent bg-clip-text" style={{backgroundImage:'linear-gradient(135deg, #4F46E5 0%, #2563EB 50%, #0EA5E9 100%)'}}>
                 Powered by AI, Built for Trust.
               </span>
             </h1>
@@ -107,7 +103,7 @@ export const LandingPage: React.FC = () => {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => handleQuickDemo('APPLICANT')}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-500/25 flex items-center gap-2 cursor-pointer ring-1 ring-white/15"
+                  className="px-5 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 cursor-pointer btn-brand"
                 >
                   <FileText className="w-4 h-4" />
                   Applicant Portal
@@ -116,16 +112,16 @@ export const LandingPage: React.FC = () => {
 
                 <button
                   onClick={() => handleQuickDemo('OFFICER')}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white font-bold text-xs transition-all shadow-lg shadow-violet-500/25 flex items-center gap-2 cursor-pointer ring-1 ring-white/15"
+                  className="px-5 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 cursor-pointer t-btn"
                 >
-                  <UserCheck className="w-4 h-4 text-white" />
+                  <UserCheck className="w-4 h-4 text-indigo-400" />
                   Verification Officer Desk
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
 
                 <button
                   onClick={() => handleQuickDemo('ADMIN')}
-                  className="px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 cursor-pointer t-btn"
+                  className="px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 cursor-pointer t-btn"
                 >
                   <Scale className="w-4 h-4 text-emerald-500" />
                   Admin Analytics
@@ -142,17 +138,11 @@ export const LandingPage: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <div className="relative w-full max-w-sm rounded-3xl p-6 shadow-2xl overflow-hidden"
+            <div className="relative w-full max-w-sm rounded-3xl p-6 shadow-xl overflow-hidden"
               style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
-              {/* Animated Laser Scan */}
-              <motion.div
-                className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#06B6D4] z-20"
-                animate={{ top: ['0%', '100%', '0%'] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              />
 
               {/* Document Replica */}
-              <div className="bg-[#FAFBFD] text-slate-900 rounded-2xl p-5 shadow-inner border border-slate-200 relative select-none">
+              <div className="bg-[#FAFBFD] text-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200 relative select-none">
                 <div className="text-center pb-3 border-b border-slate-200">
                   <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center mx-auto mb-1">
                     <ShieldCheck className="w-5 h-5 text-indigo-400" />

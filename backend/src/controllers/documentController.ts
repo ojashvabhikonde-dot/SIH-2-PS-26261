@@ -1,11 +1,12 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { AuthenticatedRequest } from '../middleware/auth';
 
-const prisma = new PrismaClient();
+
+
 
 export async function uploadDocument(req: AuthenticatedRequest, res: Response) {
   try {

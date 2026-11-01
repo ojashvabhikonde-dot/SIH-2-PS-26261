@@ -1,9 +1,9 @@
 import { Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import { AuthenticatedRequest } from '../middleware/auth';
 import { runAiPipeline, addScanListener, removeScanListener } from '../services/aiPipelineService';
 
-const prisma = new PrismaClient();
+
 
 export async function getApplications(req: AuthenticatedRequest, res: Response) {
   try {

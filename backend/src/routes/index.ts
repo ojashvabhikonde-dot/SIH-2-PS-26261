@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import { authenticateToken, requireRole } from '../middleware/auth';
 import * as authController from '../controllers/authController';
 import * as applicationController from '../controllers/applicationController';
@@ -14,7 +14,7 @@ import * as auditController from '../controllers/auditController';
 import * as notificationController from '../controllers/notificationController';
 import { generateApplicationPdf, generateApplicationCsv } from '../services/reportService';
 
-const prisma = new PrismaClient();
+
 const router = Router();
 
 // Configure Multer storage

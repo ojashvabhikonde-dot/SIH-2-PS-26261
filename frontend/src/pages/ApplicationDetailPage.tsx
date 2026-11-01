@@ -121,35 +121,36 @@ export const ApplicationDetailPage: React.FC = () => {
       </div>
 
       {/* Top Dossier Header Card */}
-      <div className="p-7 rounded-3xl bg-[#111827]/90 border border-white/10 shadow-2xl backdrop-blur-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="p-7 rounded-3xl shadow-2xl backdrop-blur-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative overflow-hidden"
+        style={{backgroundColor:'var(--bg-surface)', border:'1px solid var(--border)'}}>
         {/* Subtle decorative glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{backgroundColor:'var(--accent-subtle)'}} />
 
         <div className="space-y-2 relative z-10">
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="font-mono text-base font-extrabold text-indigo-400">
+            <span className="font-mono text-base font-extrabold" style={{color:'var(--accent)'}}>
               {application.applicationNumber}
             </span>
-            <span className="text-xs px-3 py-0.5 rounded-full font-bold bg-white/[0.06] text-slate-200 border border-white/[0.08]">
+            <span className="text-xs px-3 py-0.5 rounded-full font-bold" style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)', color:'var(--text-body)'}}>
               {application.status.replace(/_/g, ' ')}
             </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 font-semibold border border-indigo-500/25">
+            <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold" style={{backgroundColor:'var(--accent-subtle)', border:'1px solid var(--border-accent)', color:'var(--accent)'}}>
               {application.programCategory}
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{application.institution.name}</h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{color:'var(--text-heading)'}}>{application.institution.name}</h2>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
+          <div className="flex flex-wrap items-center gap-4 text-xs" style={{color:'var(--text-muted)'}}>
             <span className="flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5 text-indigo-400" />
+              <Building2 className="w-3.5 h-3.5" style={{color:'var(--accent)'}} />
               {application.institution.state} • {application.institution.type}
             </span>
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+              <Calendar className="w-3.5 h-3.5" style={{color:'var(--accent)'}} />
               Intake Year: {application.academicYear}
             </span>
-            <span className="flex items-center gap-1.5 font-mono text-slate-400">
+            <span className="flex items-center gap-1.5 font-mono" style={{color:'var(--text-muted)'}}>
               Applicant: {application.applicant?.name || 'Dr. Rajesh Sharma'}
             </span>
           </div>
@@ -192,7 +193,7 @@ export const ApplicationDetailPage: React.FC = () => {
                 setDecisionRemarksPreset('');
                 setShowDecisionModal(true);
               }}
-              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white font-bold text-xs transition shadow-lg shadow-indigo-500/25 flex items-center gap-2 cursor-pointer ring-1 ring-white/10"
+              className="px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 cursor-pointer btn-brand"
             >
               <UserCheck className="w-4 h-4" />
               Adjudicate Verdict
@@ -215,29 +216,31 @@ export const ApplicationDetailPage: React.FC = () => {
       {/* Top Scrutiny Summary Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Trust Score Ring Card */}
-        <div className="lg:col-span-4 p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] flex flex-col items-center justify-center text-center shadow-sm">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">
+        <div className="lg:col-span-4 p-6 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm"
+          style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <span className="text-xs font-bold uppercase tracking-wider mb-4" style={{color:'var(--text-muted)'}}>
             Aggregated Regulatory Trust Index
           </span>
           <TrustScoreRing score={application.overallTrustScore} size={150} />
-          <p className="text-xs text-slate-400 mt-4 max-w-xs leading-relaxed">
+          <p className="text-xs mt-4 max-w-xs leading-relaxed" style={{color:'var(--text-muted)'}}>
             Composite index calculated across cryptographic registry match, ELA forensics, and dynamic bylaws.
           </p>
         </div>
 
         {/* Right Column: Key Statutory Findings & Decision Overview */}
-        <div className="lg:col-span-8 p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] space-y-4 shadow-sm">
-          <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-            <span className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
+        <div className="lg:col-span-8 p-6 rounded-3xl space-y-4 shadow-sm"
+          style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <div className="flex items-center justify-between pb-3 border-b" style={{borderColor:'var(--border)'}}>
+            <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-2" style={{color:'var(--text-heading)'}}>
+              <Sparkles className="w-4 h-4" style={{color:'var(--accent)'}} />
               Statutory Findings Summary
             </span>
-            <span className="text-xs text-slate-400 font-mono">
-              Status: <strong className="text-white">{application.status}</strong>
+            <span className="text-xs font-mono" style={{color:'var(--text-muted)'}}>
+              Status: <strong style={{color:'var(--text-heading)'}}>{application.status}</strong>
             </span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed font-normal">
+          <p className="text-xs leading-relaxed font-normal" style={{color:'var(--text-body)'}}>
             {application.aiSummary || 'Dossier initialized. Review clearance attachments.'}
           </p>
 
@@ -339,27 +342,26 @@ export const ApplicationDetailPage: React.FC = () => {
       {activeTab === 'EVIDENCE' && (
         <div className="space-y-4">
           {application.documents.length === 0 ? (
-            <div className="p-12 text-center rounded-3xl bg-[#111827]/80 border border-white/[0.08] text-slate-400 text-xs">
+            <div className="p-12 text-center rounded-3xl text-xs" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)', color:'var(--text-muted)'}}>
               No clearance documents uploaded for this application yet.
             </div>
           ) : (
             <>
               {/* Document Selector Pills */}
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-slate-400 mr-1">Select Clearance:</span>
+                <span className="text-xs font-semibold mr-1" style={{color:'var(--text-muted)'}}>Select Clearance:</span>
                 {application.documents.map((doc, idx) => (
                   <button
                     key={doc.id}
                     onClick={() => setSelectedDocIndex(idx)}
-                    className={`px-3.5 py-2 rounded-2xl text-xs font-semibold transition-all border flex items-center gap-2 cursor-pointer ${
-                      selectedDocIndex === idx
-                        ? 'bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600 text-white border-transparent shadow-lg shadow-indigo-500/25 ring-1 ring-white/10'
-                        : 'bg-[#111827] border-white/10 text-slate-400 hover:text-white hover:border-white/20'
-                    }`}
+                    className="px-3.5 py-2 rounded-2xl text-xs font-semibold transition-all border flex items-center gap-2 cursor-pointer"
+                    style={selectedDocIndex === idx
+                      ? {backgroundColor:'var(--accent)', color:'var(--accent-text)', borderColor:'var(--accent)'}
+                      : {backgroundColor:'var(--bg-elevated)', borderColor:'var(--border)', color:'var(--text-muted)'}}
                   >
                     <span>{doc.documentType.replace(/_/g, ' ')}</span>
                     <span className={`text-[10px] font-mono font-bold ${
-                      doc.trustScore >= 80 ? 'text-emerald-300' : 'text-rose-300'
+                      doc.trustScore >= 80 ? 'text-emerald-500' : 'text-rose-500'
                     }`}>
                       {doc.trustScore}%
                     </span>
@@ -398,31 +400,31 @@ export const ApplicationDetailPage: React.FC = () => {
             onUploadSuccess={() => fetchApplication()}
           />
 
-          <div className="rounded-3xl bg-[#111827]/85 border border-white/[0.08] overflow-hidden shadow-sm">
-            <div className="p-4 border-b border-white/[0.06] bg-white/[0.02] font-bold text-xs text-white">
+          <div className="rounded-3xl overflow-hidden shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+            <div className="p-4 border-b font-bold text-xs" style={{borderColor:'var(--border)', backgroundColor:'var(--bg-elevated)', color:'var(--text-heading)'}}>
               Currently Attached Clearance Documents ({application.documents.length})
             </div>
-            <div className="divide-y divide-white/[0.06]">
+            <div className="divide-y" style={{borderColor:'var(--border)'}}>
               {application.documents.map((doc) => (
                 <div key={doc.id} className="p-4 flex items-center justify-between gap-4 text-xs">
                   <div className="space-y-1">
-                    <p className="font-bold text-white flex items-center gap-2">
+                    <p className="font-bold flex items-center gap-2" style={{color:'var(--text-heading)'}}>
                       {doc.originalName}
                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                         doc.status === 'VALIDATED'
-                          ? 'bg-emerald-500/15 text-emerald-400'
-                          : 'bg-rose-500/15 text-rose-400'
+                          ? 'bg-emerald-500/15 text-emerald-500'
+                          : 'bg-rose-500/15 text-rose-500'
                       }`}>
                         {doc.status}
                       </span>
                     </p>
-                    <p className="text-[11px] text-slate-400 font-mono">
+                    <p className="text-[11px] font-mono" style={{color:'var(--text-muted)'}}>
                       Category: {doc.documentType} • SHA-256: {doc.sha256Hash}
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="font-mono text-sm font-bold text-indigo-400">{doc.trustScore}%</span>
-                    <p className="text-[10px] text-slate-500 uppercase">Trust Index</p>
+                    <span className="font-mono text-sm font-bold" style={{color:'var(--accent)'}}>{doc.trustScore}%</span>
+                    <p className="text-[10px] uppercase" style={{color:'var(--text-muted)'}}>Trust Index</p>
                   </div>
                 </div>
               ))}
@@ -433,10 +435,10 @@ export const ApplicationDetailPage: React.FC = () => {
 
       {/* TAB CONTENT 4: VERIFICATION TIMELINE */}
       {activeTab === 'TIMELINE' && (
-        <div className="p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] shadow-sm">
-          <div className="pb-4 mb-4 border-b border-white/[0.06]">
-            <h4 className="text-sm font-bold text-white">Cryptographic Audit Trail &amp; Verification Chronology</h4>
-            <p className="text-xs text-slate-400">Immutable ledger of every autonomous and human regulatory action</p>
+        <div className="p-6 rounded-3xl shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <div className="pb-4 mb-4 border-b" style={{borderColor:'var(--border)'}}>
+            <h4 className="text-sm font-bold" style={{color:'var(--text-heading)'}}>Cryptographic Audit Trail &amp; Verification Chronology</h4>
+            <p className="text-xs" style={{color:'var(--text-muted)'}}>Immutable ledger of every autonomous and human regulatory action</p>
           </div>
           <VerificationTimeline logs={application.auditLogs} createdDate={application.createdAt} />
         </div>

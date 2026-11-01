@@ -7,7 +7,7 @@ import apiRouter from './routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors({
@@ -30,7 +30,7 @@ app.get('/docs', (_req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SIH26261 Platform API Documentation</title>
+  <title>Docusure AI Platform API Documentation</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #070D1E; color: #F1F5F9; padding: 40px; }
     h1 { color: #3A86FF; border-bottom: 2px solid #1E293B; padding-bottom: 12px; }
@@ -43,7 +43,7 @@ app.get('/docs', (_req, res) => {
   </style>
 </head>
 <body>
-  <h1>SIH26261 API Specification &amp; Endpoints</h1>
+  <h1>Docusure AI API Specification &amp; Endpoints</h1>
   <p>From Documents to Decisions, Powered by AI, Built for Trust.</p>
   
   <h2>Authentication &amp; User Scoping</h2>
@@ -83,7 +83,7 @@ app.get('/docs', (_req, res) => {
 // Root Healthcheck
 app.get('/', (_req, res) => {
   res.json({
-    name: 'SIH26261 Regulatory Compliance & AI Verification Platform',
+    name: 'Docusure AI Regulatory Compliance & AI Verification Platform',
     status: 'online',
     version: '1.0.0',
     tagline: 'From Documents to Decisions, Powered by AI, Built for Trust.',
@@ -92,7 +92,7 @@ app.get('/', (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 SIH26261 Backend Server listening on http://localhost:${PORT}`);
+  console.log(`🚀 Docusure AI Backend Server listening on http://localhost:${PORT}`);
   console.log(`📄 API Documentation available at http://localhost:${PORT}/docs`);
   console.log(`📂 Document uploads directory mounted from: ${uploadDir}`);
 });

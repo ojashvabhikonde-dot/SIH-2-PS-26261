@@ -39,18 +39,19 @@ export const RulesManagementPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-left font-sans">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-7 rounded-3xl bg-[#111827]/90 border border-white/10 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-7 rounded-3xl shadow-2xl backdrop-blur-xl relative overflow-hidden"
+        style={{backgroundColor:'var(--bg-surface)', border:'1px solid var(--border)'}}>
         {/* Decorative glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{backgroundColor:'var(--accent-subtle)'}} />
 
         <div className="relative z-10 space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-300 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">
+            <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border" style={{backgroundColor:'var(--accent-subtle)', color:'var(--accent)', borderColor:'var(--border-accent)'}}>
               Compliance Engine Governance
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Regulatory Rules Catalog</h2>
-          <p className="text-xs text-slate-300">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{color:'var(--text-heading)'}}>Regulatory Rules Catalog</h2>
+          <p className="text-xs" style={{color:'var(--text-body)'}}>
             Configure dynamic statutory criteria, validity thresholds, and mandatory clearance mandates
           </p>
         </div>
@@ -60,7 +61,7 @@ export const RulesManagementPage: React.FC = () => {
             setSelectedRule(null);
             setShowEditor(true);
           }}
-          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-500/25 flex items-center gap-2 self-start sm:self-auto cursor-pointer ring-1 ring-white/10 relative z-10"
+          className="px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 self-start sm:self-auto cursor-pointer relative z-10 btn-brand"
         >
           <Plus className="w-4 h-4" />
           Create New Regulatory Rule
@@ -68,7 +69,7 @@ export const RulesManagementPage: React.FC = () => {
       </div>
 
       {/* Rules Table */}
-      <div className="rounded-3xl bg-[#111827]/85 border border-white/[0.08] overflow-hidden shadow-xl">
+      <div className="rounded-3xl overflow-hidden shadow-xl" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
         {isLoading ? (
           <div className="p-16 text-center text-slate-400 text-xs font-mono">
             Loading compliance rules catalog...

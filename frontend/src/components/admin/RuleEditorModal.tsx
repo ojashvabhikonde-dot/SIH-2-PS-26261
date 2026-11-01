@@ -99,29 +99,30 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="glass-panel w-full max-w-lg rounded-2xl p-6 border border-trust-blue/40 bg-trust-midnight shadow-2xl relative"
+          className="w-full max-w-lg rounded-2xl p-6 shadow-2xl relative"
+          style={{backgroundColor:'var(--bg-surface)', border:'1px solid var(--border)'}}
         >
-          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b" style={{borderColor:'var(--border)'}}>
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-trust-blue/20 text-trust-teal">
+              <div className="p-2 rounded-xl" style={{backgroundColor:'var(--accent-subtle)', color:'var(--accent)'}}>
                 <Scale className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-white">
+              <h3 className="text-base font-bold" style={{color:'var(--text-heading)'}}>
                 {rule ? 'Edit Compliance Rule' : 'Create Regulatory Compliance Rule'}
               </h3>
             </div>
-            <button onClick={onClose} className="p-1 text-slate-400 hover:text-white transition">
+            <button onClick={onClose} className="p-1 transition hover:opacity-80" style={{color:'var(--text-muted)'}}>
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {error && (
-            <div className="p-3 mb-4 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs">
+            <div className="p-3 mb-4 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-500 text-xs">
               {error}
             </div>
           )}
@@ -129,7 +130,7 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
           <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-slate-300 font-bold uppercase mb-1 text-[10px]">
+                <label className="block font-bold uppercase mb-1 text-[10px]" style={{color:'var(--text-body)'}}>
                   Rule Code (Immutable Key)
                 </label>
                 <input
@@ -138,18 +139,18 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
                   disabled={!!rule}
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-trust-teal disabled:opacity-60"
+                  className="w-full t-input rounded-xl p-2.5 font-mono disabled:opacity-60"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold uppercase mb-1 text-[10px]">
+                <label className="block font-bold uppercase mb-1 text-[10px]" style={{color:'var(--text-body)'}}>
                   Regulatory Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as any)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-trust-teal"
+                  className="w-full t-input rounded-xl p-2.5 cursor-pointer"
                 >
                   <option value="MANDATORY">Mandatory Statutory</option>
                   <option value="INFRASTRUCTURE">Campus Infrastructure</option>
@@ -160,7 +161,7 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-slate-300 font-bold uppercase mb-1 text-[10px]">
+              <label className="block font-bold uppercase mb-1 text-[10px]" style={{color:'var(--text-body)'}}>
                 Rule Title
               </label>
               <input
@@ -169,12 +170,12 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Fire Safety NOC Clearance"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-trust-teal"
+                className="w-full t-input rounded-xl p-2.5"
               />
             </div>
 
             <div>
-              <label className="block text-slate-300 font-bold uppercase mb-1 text-[10px]">
+              <label className="block font-bold uppercase mb-1 text-[10px]" style={{color:'var(--text-body)'}}>
                 Statutory Description
               </label>
               <textarea
@@ -183,19 +184,19 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter regulatory mandate context and requirements..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-trust-teal"
+                className="w-full t-input rounded-xl p-2.5"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-slate-300 font-bold uppercase mb-1 text-[10px]">
+                <label className="block font-bold uppercase mb-1 text-[10px]" style={{color:'var(--text-body)'}}>
                   Violation Severity
                 </label>
                 <select
                   value={severity}
                   onChange={(e) => setSeverity(e.target.value as any)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-trust-teal"
+                  className="w-full t-input rounded-xl p-2.5 cursor-pointer"
                 >
                   <option value="CRITICAL">Critical (Triggers Auto-Flag)</option>
                   <option value="WARNING">Warning (Penalty Deduction)</option>
@@ -208,38 +209,39 @@ export const RuleEditorModal: React.FC<RuleEditorModalProps> = ({
                   id="ruleActive"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="w-4 h-4 rounded text-trust-blue bg-slate-950 border-slate-800"
+                  className="w-4 h-4 rounded"
                 />
-                <label htmlFor="ruleActive" className="text-slate-300 font-medium">
+                <label htmlFor="ruleActive" className="font-medium" style={{color:'var(--text-body)'}}>
                   Active in Live AI Engine
                 </label>
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-300 font-bold uppercase mb-1 text-[10px]">
+              <label className="block font-bold uppercase mb-1 text-[10px]" style={{color:'var(--text-body)'}}>
                 Evaluation Logic (JSON Definition)
               </label>
               <textarea
                 rows={4}
                 value={ruleJson}
                 onChange={(e) => setRuleJson(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-mono text-[11px] text-trust-teal focus:outline-none focus:border-trust-teal"
+                className="w-full t-input rounded-xl p-2.5 font-mono text-[11px]"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t" style={{borderColor:'var(--border)'}}>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl text-slate-400 hover:text-white"
+                className="px-4 py-2 rounded-xl transition hover:opacity-80"
+                style={{color:'var(--text-muted)'}}
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-5 py-2 rounded-xl font-bold bg-trust-blue hover:bg-blue-600 text-white transition shadow-lg shadow-blue-500/20"
+                className="px-5 py-2 rounded-xl font-semibold btn-brand"
               >
                 {isSubmitting ? 'Saving...' : 'Save Rule'}
               </button>

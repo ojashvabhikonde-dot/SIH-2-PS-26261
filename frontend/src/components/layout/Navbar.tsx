@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -35,6 +35,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
 
+  const roleMenuRef = useRef<HTMLDivElement>(null);
+  const notifMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close menus on click outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (roleMenuRef.current && !roleMenuRef.current.contains(event.target as Node)) {
+        setShowRoleMenu(false);
+      }
+      if (notifMenuRef.current && !notifMenuRef.current.contains(event.target as Node)) {
+        setShowNotifMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   useEffect(() => {
     if (user) {
       api.getNotifications()
@@ -59,13 +76,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-indigo-600 to-violet-600 flex items-center justify-center transition-all duration-300 group-hover:scale-105 ring-1 ring-white/20">
-            <ShieldCheck className="w-5 h-5 text-white drop-shadow" />
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 shadow-md shadow-indigo-500/20" style={{background:'linear-gradient(135deg, #4F46E5 0%, #2563EB 100%)'}}>
+            <ShieldCheck className="w-5 h-5 text-white drop-shadow-sm" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-base tracking-tight theme-text-primary font-sans">SIH26261</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-500 border border-indigo-500/30 tracking-wider">
+              <span className="font-extrabold text-base tracking-tight theme-text-primary font-sans">Docusure AI</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border tracking-wider" style={{background:'var(--accent-subtle)', color:'var(--accent)', borderColor:'var(--border-accent)'}}>
                 REGULATORY SUITE
               </span>
             </div>
@@ -150,13 +167,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
             onClick={onOpenCommandPalette}
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl theme-surface theme-text-secondary hover:theme-text-primary transition-all text-xs"
           >
-            <Search className="w-3.5 h-3.5 text-indigo-400" />
+            <Search className="w-3.5 h-3.5" style={{color:'var(--accent)'}} />
             <span className="font-medium">Quick search...</span>
             <kbd className="font-mono text-[10px] px-1.5 py-0.5 rounded" style={{background:'var(--kbd-bg)', color:'var(--text-secondary)'}}>Ctrl+K</kbd>
           </button>
 
           {/* Quick 1-Click Role Switcher Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={roleMenuRef}>
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl theme-surface text-xs hover:border-indigo-500/40 transition-all shadow-sm"
@@ -164,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="font-semibold theme-text-muted">Role:</span>
-              <span className="font-bold text-indigo-500 uppercase tracking-wide">{user?.role || 'Guest'}</span>
+              <span className="font-bold uppercase tracking-wide" style={{color:'var(--accent)'}}>{user?.role || 'Guest'}</span>
               <ChevronDown className="w-3 h-3 theme-text-muted" />
             </button>
 
@@ -200,13 +217,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
 
           {/* Notifications Bell */}
           {user && (
-            <div className="relative">
+            <div className="relative" ref={notifMenuRef}>
               <button
                 onClick={() => setShowNotifMenu(!showNotifMenu)}
-                className="p-2 rounded-xl theme-surface theme-text-secondary hover:text-indigo-500 transition-all relative"
+                className="p-2 rounded-xl theme-surface theme-text-secondary transition-all relative"
                 title="Notifications"
+                style={{}}
               >
-                <Bell className="w-4 h-4" />
+                <Bell className="w-4 h-4" style={{color:'var(--text-muted)'}} />
                 {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-mono text-[9px] font-bold flex items-center justify-center animate-pulse">
                     {unreadCount}
@@ -288,7 +306,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
               <Link
                 to="/login"
                 state={{ mode: 'register' }}
-                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white font-bold text-xs transition shadow-lg shadow-indigo-500/25"
+                className="px-4 py-1.5 rounded-xl font-bold text-xs transition btn-brand"
               >
                 Register
               </Link>

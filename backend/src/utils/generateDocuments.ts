@@ -5,6 +5,7 @@ import crypto from 'crypto';
 export interface GeneratedDocMeta {
   fileName: string;
   originalName: string;
+  
   filePath: string;
   fileSize: number;
   sha256Hash: string;
@@ -176,7 +177,7 @@ export function generateSyntheticSvgCertificate(params: {
   </g>
 
   <!-- Bottom micro-footer -->
-  <text x="400" y="1045" fill="#94A3B8" font-size="10" text-anchor="middle">SIH26261 | Digitizing Verification. Ensuring Compliance. Building a Transparent Future. • Form 26-B Regulatory Mandate</text>
+  <text x="400" y="1045" fill="#94A3B8" font-size="10" text-anchor="middle">Docusure AI | Digitizing Verification. Ensuring Compliance. Building a Transparent Future. • Form 26-B Regulatory Mandate</text>
 </svg>`;
 
   fs.writeFileSync(filePath, svg, 'utf-8');

@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
-const prisma = new PrismaClient();
+
 
 // In-memory SSE listeners for live streaming AI scan stepper
 type ScanProgressListener = (data: {

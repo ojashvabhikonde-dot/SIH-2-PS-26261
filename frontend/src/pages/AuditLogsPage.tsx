@@ -28,34 +28,35 @@ export const AuditLogsPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-left font-sans">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-7 rounded-3xl bg-[#111827]/90 border border-white/10 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-7 rounded-3xl shadow-2xl backdrop-blur-xl relative overflow-hidden"
+        style={{backgroundColor:'var(--bg-surface)', border:'1px solid var(--border)'}}>
         {/* Decorative glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{backgroundColor:'var(--accent-subtle)'}} />
 
         <div className="relative z-10 space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-300 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">
+            <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border" style={{backgroundColor:'var(--accent-subtle)', color:'var(--accent)', borderColor:'var(--border-accent)'}}>
               Immutable Regulatory Ledger
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">System Audit &amp; Event Trail</h2>
-          <p className="text-xs text-slate-300">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{color:'var(--text-heading)'}}>System Audit &amp; Event Trail</h2>
+          <p className="text-xs" style={{color:'var(--text-body)'}}>
             Cryptographically sealed audit records for all user logins, document uploads, AI findings, and officer verdicts
           </p>
         </div>
 
-        <div className="font-mono text-xs text-slate-300 bg-white/[0.04] px-4 py-2.5 rounded-2xl border border-white/[0.08] relative z-10 shadow-sm">
-          Total Recorded Events: <span className="text-indigo-400 font-bold ml-1">{total}</span>
+        <div className="font-mono text-xs px-4 py-2.5 rounded-2xl relative z-10 shadow-sm" style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)', color:'var(--text-body)'}}>
+          Total Recorded Events: <span className="font-bold ml-1" style={{color:'var(--accent)'}}>{total}</span>
         </div>
       </div>
 
       {/* Filter Toolbar */}
       <div className="flex items-center gap-3">
-        <Filter className="w-4 h-4 text-slate-400" />
+        <Filter className="w-4 h-4" style={{color:'var(--text-muted)'}} />
         <select
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
-          className="bg-[#111827] border border-white/10 text-xs text-white rounded-2xl px-3.5 py-2 focus:outline-none focus:border-indigo-500 shadow-sm"
+          className="t-input text-xs rounded-2xl px-3.5 py-2 shadow-sm cursor-pointer"
         >
           <option value="">All Event Actions</option>
           <option value="USER_LOGIN">User Logins</option>
@@ -70,7 +71,7 @@ export const AuditLogsPage: React.FC = () => {
       </div>
 
       {/* Audit Logs Table */}
-      <div className="rounded-3xl bg-[#111827]/85 border border-white/[0.08] overflow-hidden shadow-xl">
+      <div className="rounded-3xl overflow-hidden shadow-xl" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
         {isLoading ? (
           <div className="p-16 text-center text-slate-400 text-xs font-mono">
             Loading immutable audit trail...

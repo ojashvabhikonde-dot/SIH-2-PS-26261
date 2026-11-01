@@ -86,11 +86,12 @@ export const KanbanQueue: React.FC<KanbanQueueProps> = ({ applications, onStatus
                 key={col.id}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, col.id)}
-                className={`flex flex-col rounded-3xl bg-[#111827]/70 border ${col.color} p-3.5 min-w-[270px] min-h-[500px] shadow-lg backdrop-blur-md`}
+                className={`flex flex-col rounded-3xl border ${col.color} p-3.5 min-w-[270px] min-h-[500px] shadow-lg backdrop-blur-md`}
+                style={{backgroundColor:'var(--bg-card)'}}
               >
                 {/* Column Header */}
-                <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.06]">
-                  <span className="text-xs font-bold text-white tracking-wide">{col.title}</span>
+                <div className="flex items-center justify-between pb-3 mb-3 border-b" style={{borderColor:'var(--border)'}}>
+                  <span className="text-xs font-bold tracking-wide" style={{color:'var(--text-heading)'}}>{col.title}</span>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${col.badge}`}>
                     {colApps.length}
                   </span>
@@ -99,13 +100,13 @@ export const KanbanQueue: React.FC<KanbanQueueProps> = ({ applications, onStatus
                 {/* Column Cards Drop Area */}
                 <div className="space-y-3 flex-1 overflow-y-auto">
                   {colApps.length === 0 ? (
-                    <div className="h-32 flex items-center justify-center border-2 border-dashed border-white/[0.06] rounded-2xl text-slate-600 text-xs font-medium">
+                    <div className="h-32 flex items-center justify-center border-2 border-dashed rounded-2xl text-xs font-medium" style={{borderColor:'var(--border)', color:'var(--text-muted)'}}>
                       Drop cards here
                     </div>
                   ) : (
                     colApps.map((app) => {
                       const hasFlags = app.anomalyFlags && app.anomalyFlags.length > 0;
-                      const scoreColor = app.overallTrustScore >= 85 ? 'text-emerald-400' : app.overallTrustScore >= 60 ? 'text-amber-400' : 'text-rose-400';
+                      const scoreColor = app.overallTrustScore >= 85 ? 'text-emerald-500' : app.overallTrustScore >= 60 ? 'text-amber-500' : 'text-rose-500';
 
                       return (
                         <div
@@ -113,14 +114,15 @@ export const KanbanQueue: React.FC<KanbanQueueProps> = ({ applications, onStatus
                           draggable
                           onDragStart={(e) => handleDragStart(e, app.id)}
                           onClick={() => navigate(`/applications/${app.applicationNumber}`)}
-                          className="p-4 rounded-2xl bg-[#111827] border border-white/[0.08] hover:border-indigo-500/40 cursor-grab active:cursor-grabbing hover:shadow-lg transition duration-200 group"
+                          className="p-4 rounded-2xl cursor-grab active:cursor-grabbing hover:shadow-lg transition duration-200 group"
+                          style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)'}}
                         >
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <div>
-                              <span className="font-mono text-xs font-bold text-indigo-400 group-hover:underline">
+                              <span className="font-mono text-xs font-bold group-hover:underline" style={{color:'var(--accent)'}}>
                                 {app.applicationNumber}
                               </span>
-                              <h5 className="text-xs font-semibold text-white line-clamp-1 mt-0.5 tracking-tight">
+                              <h5 className="text-xs font-semibold line-clamp-1 mt-0.5 tracking-tight" style={{color:'var(--text-heading)'}}>
                                 {app.institution.name}
                               </h5>
                             </div>
@@ -168,7 +170,7 @@ export const KanbanQueue: React.FC<KanbanQueueProps> = ({ applications, onStatus
 
       {/* TABLE VIEW */}
       {viewMode === 'TABLE' && (
-        <div className="rounded-3xl bg-[#111827]/85 border border-white/[0.08] overflow-hidden shadow-xl">
+        <div className="rounded-3xl overflow-hidden shadow-xl" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-white/[0.03] text-slate-400 text-[11px] uppercase tracking-wider border-b border-white/[0.06]">

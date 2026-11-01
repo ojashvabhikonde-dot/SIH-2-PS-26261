@@ -55,24 +55,25 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left font-sans">
       {/* Executive Header */}
-      <div className="p-7 rounded-3xl bg-[#111827]/90 border border-white/10 shadow-2xl backdrop-blur-xl flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="p-7 rounded-3xl shadow-2xl backdrop-blur-xl flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden"
+        style={{backgroundColor:'var(--bg-surface)', border:'1px solid var(--border)'}}>
         {/* Decorative glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{backgroundColor:'var(--accent-subtle)'}} />
 
         <div className="space-y-1.5 relative z-10">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-300 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">
+            <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border" style={{backgroundColor:'var(--accent-subtle)', color:'var(--accent)', borderColor:'var(--border-accent)'}}>
               Executive Analytics &amp; Regulatory Oversight
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Institutional Compliance Telemetry</h2>
-          <p className="text-xs text-slate-300">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{color:'var(--text-heading)'}}>Institutional Compliance Telemetry</h2>
+          <p className="text-xs" style={{color:'var(--text-body)'}}>
             Real-time scrutiny performance, anomaly flag telemetry, and regulatory funnel velocity
           </p>
         </div>
 
         <div className="flex items-center gap-2 relative z-10">
-          <span className="text-xs text-slate-400 font-mono px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.08]">
+          <span className="text-xs font-mono px-3 py-1.5 rounded-xl" style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)', color:'var(--text-muted)'}}>
             AICTE National Scrutiny Cell
           </span>
         </div>
@@ -80,42 +81,42 @@ export const AdminDashboard: React.FC = () => {
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-[#111827]/80 border border-white/[0.08] shadow-sm">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <div className="p-5 rounded-2xl shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <div className="flex items-center justify-between text-xs mb-2" style={{color:'var(--text-muted)'}}>
             <span className="font-semibold uppercase tracking-wider">Total Applications</span>
-            <Activity className="w-4 h-4 text-indigo-400" />
+            <Activity className="w-4 h-4" style={{color:'var(--accent)'}} />
           </div>
-          <span className="font-mono text-3xl font-black text-white">{metrics.totalApplications}</span>
-          <p className="text-[11px] text-emerald-400 mt-2 flex items-center gap-1">
+          <span className="font-mono text-3xl font-black" style={{color:'var(--text-heading)'}}>{metrics.totalApplications}</span>
+          <p className="text-[11px] text-emerald-500 mt-2 flex items-center gap-1">
             <ArrowUpRight className="w-3.5 h-3.5" /> +18% over prior cycle
           </p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#111827]/80 border border-white/[0.08] shadow-sm">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <div className="p-5 rounded-2xl shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <div className="flex items-center justify-between text-xs mb-2" style={{color:'var(--text-muted)'}}>
             <span className="font-semibold uppercase tracking-wider">Approval Rate</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
           </div>
-          <span className="font-mono text-3xl font-black text-emerald-400">{metrics.approvalRate}</span>
-          <p className="text-[11px] text-slate-400 mt-2">Of finalized determinations</p>
+          <span className="font-mono text-3xl font-black text-emerald-500">{metrics.approvalRate}</span>
+          <p className="text-[11px] mt-2" style={{color:'var(--text-muted)'}}>Of finalized determinations</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#111827]/80 border border-white/[0.08] shadow-sm">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <div className="p-5 rounded-2xl shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <div className="flex items-center justify-between text-xs mb-2" style={{color:'var(--text-muted)'}}>
             <span className="font-semibold uppercase tracking-wider">Integrity Flag Rate</span>
-            <ShieldAlert className="w-4 h-4 text-rose-400" />
+            <ShieldAlert className="w-4 h-4 text-rose-500" />
           </div>
-          <span className="font-mono text-3xl font-black text-rose-400">{metrics.flagRate}</span>
-          <p className="text-[11px] text-slate-400 mt-2">Requires officer investigation</p>
+          <span className="font-mono text-3xl font-black text-rose-500">{metrics.flagRate}</span>
+          <p className="text-[11px] mt-2" style={{color:'var(--text-muted)'}}>Requires officer investigation</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#111827]/80 border border-white/[0.08] shadow-sm">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <div className="p-5 rounded-2xl shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <div className="flex items-center justify-between text-xs mb-2" style={{color:'var(--text-muted)'}}>
             <span className="font-semibold uppercase tracking-wider">Avg Processing Time</span>
-            <Clock className="w-4 h-4 text-cyan-400" />
+            <Clock className="w-4 h-4 text-cyan-500" />
           </div>
-          <span className="font-mono text-3xl font-black text-cyan-400">{metrics.avgProcessingTime}</span>
-          <p className="text-[11px] text-emerald-400 mt-2 flex items-center gap-1">
+          <span className="font-mono text-3xl font-black text-cyan-500">{metrics.avgProcessingTime}</span>
+          <p className="text-[11px] text-emerald-500 mt-2 flex items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5" /> Down from 14 days (manual)
           </p>
         </div>
@@ -124,13 +125,13 @@ export const AdminDashboard: React.FC = () => {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Monthly Funnel Chart */}
-        <div className="lg:col-span-8 p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] space-y-4 shadow-sm">
+        <div className="lg:col-span-8 p-6 rounded-3xl space-y-4 shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-white flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-indigo-400" />
+            <h4 className="text-sm font-bold flex items-center gap-2" style={{color:'var(--text-heading)'}}>
+              <BarChart3 className="w-4 h-4" style={{color:'var(--accent)'}} />
               Application Scrutiny Funnel Velocity (Monthly)
             </h4>
-            <span className="text-[11px] text-slate-400 font-mono">Submitted vs Verified vs Approved</span>
+            <span className="text-[11px] font-mono" style={{color:'var(--text-muted)'}}>Submitted vs Verified vs Approved</span>
           </div>
 
           <div className="h-72 w-full pt-4">
@@ -139,11 +140,11 @@ export const AdminDashboard: React.FC = () => {
                 <XAxis dataKey="month" stroke="#64748B" fontSize={11} />
                 <YAxis stroke="#64748B" fontSize={11} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#111827', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '14px', fontSize: '11px', color: '#fff' }}
+                  contentStyle={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', borderRadius: '14px', fontSize: '11px', color: 'var(--text-heading)' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                <Bar dataKey="submitted" name="Submissions" fill="#6366F1" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="verified" name="AI Verified" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="submitted" name="Submissions" fill="var(--accent)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="verified" name="AI Verified" fill="var(--accent-purple, #8B5CF6)" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="approved" name="Sanctioned" fill="#10B981" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -151,10 +152,10 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Anomaly Flags Distribution Pie */}
-        <div className="lg:col-span-4 p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] space-y-4 flex flex-col justify-between shadow-sm">
+        <div className="lg:col-span-4 p-6 rounded-3xl space-y-4 flex flex-col justify-between shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-white flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-rose-400" />
+            <h4 className="text-sm font-bold flex items-center gap-2" style={{color:'var(--text-heading)'}}>
+              <ShieldAlert className="w-4 h-4 text-rose-500" />
               Integrity Flags by Type
             </h4>
           </div>
@@ -176,14 +177,14 @@ export const AdminDashboard: React.FC = () => {
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#111827', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '14px', fontSize: '11px', color: '#fff' }}
+                  contentStyle={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', borderRadius: '14px', fontSize: '11px', color: 'var(--text-heading)' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '10px' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          <p className="text-[11px] text-slate-400 text-center font-normal">
+          <p className="text-[11px] text-center font-normal" style={{color:'var(--text-muted)'}}>
             Detected via OpenCV ELA, cryptographic SHA-256 match, and date timeline heuristics.
           </p>
         </div>
@@ -192,13 +193,13 @@ export const AdminDashboard: React.FC = () => {
       {/* Bottom Grid: Top Failing Rules & Risk Stratification */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Top Failing Regulatory Checks */}
-        <div className="lg:col-span-8 p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] space-y-4 shadow-sm">
+        <div className="lg:col-span-8 p-6 rounded-3xl space-y-4 shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-white flex items-center gap-2">
-              <Scale className="w-4 h-4 text-amber-400" />
+            <h4 className="text-sm font-bold flex items-center gap-2" style={{color:'var(--text-heading)'}}>
+              <Scale className="w-4 h-4 text-amber-500" />
               Top Failing Regulatory Compliance Checks
             </h4>
-            <span className="text-[11px] text-slate-400 font-mono">Deficiency Occurrence Count</span>
+            <span className="text-[11px] font-mono" style={{color:'var(--text-muted)'}}>Deficiency Occurrence Count</span>
           </div>
 
           <div className="h-64 w-full pt-2">
@@ -207,7 +208,7 @@ export const AdminDashboard: React.FC = () => {
                 <XAxis type="number" stroke="#64748B" fontSize={11} />
                 <YAxis dataKey="rule" type="category" stroke="#94A3B8" fontSize={11} width={130} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#111827', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '14px', fontSize: '11px', color: '#fff' }}
+                  contentStyle={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', borderRadius: '14px', fontSize: '11px', color: 'var(--text-heading)' }}
                 />
                 <Bar dataKey="count" name="Failure Incidents" fill="#F59E0B" radius={[0, 4, 4, 0]} />
               </BarChart>
@@ -216,35 +217,35 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Risk Stratification Breakdown */}
-        <div className="lg:col-span-4 p-6 rounded-3xl bg-[#111827]/85 border border-white/[0.08] space-y-4 shadow-sm">
-          <h4 className="text-sm font-bold text-white flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-indigo-400" />
+        <div className="lg:col-span-4 p-6 rounded-3xl space-y-4 shadow-sm" style={{backgroundColor:'var(--bg-card)', border:'1px solid var(--border)'}}>
+          <h4 className="text-sm font-bold flex items-center gap-2" style={{color:'var(--text-heading)'}}>
+            <AlertTriangle className="w-4 h-4" style={{color:'var(--accent)'}} />
             Institutional Risk Stratification
           </h4>
 
           <div className="space-y-3 pt-2">
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between">
+            <div className="p-4 rounded-2xl flex items-center justify-between" style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)'}}>
               <div>
-                <span className="text-xs font-bold text-rose-400">High Risk Tier (&le;60%)</span>
-                <p className="text-[10px] text-slate-400">Severe tampering or duplicate flags</p>
+                <span className="text-xs font-bold text-rose-500">High Risk Tier (&le;60%)</span>
+                <p className="text-[10px]" style={{color:'var(--text-muted)'}}>Severe tampering or duplicate flags</p>
               </div>
-              <span className="font-mono text-xl font-black text-rose-400">{metrics.highRiskCount}</span>
+              <span className="font-mono text-xl font-black text-rose-500">{metrics.highRiskCount}</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between">
+            <div className="p-4 rounded-2xl flex items-center justify-between" style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)'}}>
               <div>
-                <span className="text-xs font-bold text-amber-400">Moderate Risk Tier (61-85%)</span>
-                <p className="text-[10px] text-slate-400">Expired dates or minor mismatches</p>
+                <span className="text-xs font-bold text-amber-500">Moderate Risk Tier (61-85%)</span>
+                <p className="text-[10px]" style={{color:'var(--text-muted)'}}>Expired dates or minor mismatches</p>
               </div>
-              <span className="font-mono text-xl font-black text-amber-400">{metrics.mediumRiskCount}</span>
+              <span className="font-mono text-xl font-black text-amber-500">{metrics.mediumRiskCount}</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between">
+            <div className="p-4 rounded-2xl flex items-center justify-between" style={{backgroundColor:'var(--bg-elevated)', border:'1px solid var(--border)'}}>
               <div>
-                <span className="text-xs font-bold text-emerald-400">Compliant Tier (&gt;85%)</span>
-                <p className="text-[10px] text-slate-400">Full QR authentication &amp; clear rules</p>
+                <span className="text-xs font-bold text-emerald-500">Compliant Tier (&gt;85%)</span>
+                <p className="text-[10px]" style={{color:'var(--text-muted)'}}>Full QR authentication &amp; clear rules</p>
               </div>
-              <span className="font-mono text-xl font-black text-emerald-400">{metrics.lowRiskCount}</span>
+              <span className="font-mono text-xl font-black text-emerald-500">{metrics.lowRiskCount}</span>
             </div>
           </div>
         </div>
